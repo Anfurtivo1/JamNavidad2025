@@ -42,6 +42,7 @@ public class HorseController : MonoBehaviour
         rb.linearVelocity = new Vector2(newSpeed, rb.linearVelocity.y);
     }
 
+    #region INPUT SYSTEM
     // ===== INPUT SYSTEM =====
 
     public void OnJump(InputAction.CallbackContext ctx)
@@ -49,20 +50,24 @@ public class HorseController : MonoBehaviour
         if (ctx.performed && grounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.9f, jumpForce);
+            Debug.Log("Horse Jumped");
         }
     }
 
     public void OnAccelerate(InputAction.CallbackContext ctx)
     {
         accelerating = ctx.ReadValueAsButton();
+        Debug.Log("Horse Accelerating: " + accelerating);
     }
 
     public void OnBrake(InputAction.CallbackContext ctx)
     {
         braking = ctx.ReadValueAsButton();
+        Debug.Log("Horse Braking: " + braking);
     }
+    #endregion
 
-
+    #region SUELO
     // ===== SUELO =====
 
     void OnCollisionStay2D(Collision2D col)
@@ -74,4 +79,7 @@ public class HorseController : MonoBehaviour
     {
         grounded = false;
     }
+
+    #endregion
+
 }
