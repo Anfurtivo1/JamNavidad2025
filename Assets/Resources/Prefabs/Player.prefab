@@ -102,11 +102,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f62cead64c88914a99c4c49ec259ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 5
-  maxSpeed: 8
-  brakeSpeed: 3
-  accel: 10
-  jumpForce: 10
+  idleSpeed: 5.23
+  accelSpeed: 15.2
+  speedChangeRate: 1.33
+  airControl: 1.23
+  jumpForce: 15
+  grounded: 0
+  accelerating: 0
 --- !u!50 &-3350619227591150514
 Rigidbody2D:
   serializedVersion: 5

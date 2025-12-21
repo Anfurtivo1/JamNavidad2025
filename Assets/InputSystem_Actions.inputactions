@@ -94,15 +94,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Break",
-                    "type": "Button",
-                    "id": "0cd5b593-9a5f-4d91-97e0-61b2a89a410c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -499,17 +490,6 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Accelerate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "85e31918-c9c5-4d39-af19-1db1196c25b3",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Break",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

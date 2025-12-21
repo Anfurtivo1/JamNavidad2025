@@ -4,71 +4,70 @@ using UnityEngine.InputSystem;
 public class HorseController : MonoBehaviour
 {
     Rigidbody2D rb;
+    GUIStyle debugStyle;
 
-    [Header("Velocidad")]
-    public float baseSpeed = 5f;
-    public float maxSpeed = 8f;
-    public float brakeSpeed = 3f;
-    public float accel = 10f;
+    [Header("Velocidades")]
+    public float baseSpeed = 12f;     // Velocidad mínima constante
+    public float accelSpeed = 20f;    // Velocidad al acelerar
+    public float speedChangeRate = 18f; // Qué tan rápido se ajusta la velocidad
+    public float airControl = 0.5f;   // Control en el aire
+    private float currentSpeed;
+
 
     [Header("Salto")]
-    public float jumpForce = 10f;
+    public float jumpForce = 12f;
 
-    bool grounded;
-    bool accelerating;
-    bool braking;
+    [Header("Estado")]
+    public bool grounded;
+    public bool accelerating;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentSpeed = baseSpeed; // Inicializamos con la velocidad base
     }
 
     void FixedUpdate()
     {
-        float targetSpeed = baseSpeed;
+        // Determinar la velocidad objetivo
+        float targetSpeed = accelerating ? accelSpeed : baseSpeed;
 
-        if (braking)
-            targetSpeed = brakeSpeed;
+        // Calculamos la cantidad máxima de cambio por frame
+        float maxDelta = speedChangeRate * Time.fixedDeltaTime;
 
-        if (accelerating && grounded)
-            targetSpeed = maxSpeed;
+        if (grounded)
+        {
+            // En tierra: ajustamos velocidad suavemente hacia la targetSpeed
+            currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, maxDelta);
+        }
+        else
+        {
+            // En aire: control limitado, puede ganar o perder velocidad más despacio
+            currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, maxDelta * airControl);
+        }
 
-        float newSpeed = Mathf.MoveTowards(
-            rb.linearVelocity.x,
-            targetSpeed,
-            accel * Time.fixedDeltaTime
-        );
-
-        rb.linearVelocity = new Vector2(newSpeed, rb.linearVelocity.y);
+        // Aplicar la velocidad horizontal mientras mantenemos la vertical
+        rb.linearVelocity = new Vector2(currentSpeed, rb.linearVelocity.y);
     }
 
-    #region INPUT SYSTEM
-    // ===== INPUT SYSTEM =====
+    #region INPUT
 
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && grounded)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.9f, jumpForce);
-            Debug.Log("Horse Jumped");
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
     }
 
     public void OnAccelerate(InputAction.CallbackContext ctx)
     {
         accelerating = ctx.ReadValueAsButton();
-        Debug.Log("Horse Accelerating: " + accelerating);
     }
 
-    public void OnBrake(InputAction.CallbackContext ctx)
-    {
-        braking = ctx.ReadValueAsButton();
-        Debug.Log("Horse Braking: " + braking);
-    }
     #endregion
 
     #region SUELO
-    // ===== SUELO =====
 
     void OnCollisionStay2D(Collision2D col)
     {
@@ -82,4 +81,30 @@ public class HorseController : MonoBehaviour
 
     #endregion
 
+    void OnGUI()
+    {
+        debugStyle = new GUIStyle(GUI.skin.label);
+        debugStyle.fontSize = 40;
+        debugStyle.normal.textColor = Color.white;
+
+        string velocidad = rb.linearVelocity.x.ToString("F2");
+
+        if (velocidad[0] == '-')
+        {
+            velocidad = "0";
+            GUI.Label(
+                new Rect(20, 70, 400, 60),
+                "¡Estás yendo hacia atrás!",
+                debugStyle
+            );
+            
+        }
+
+
+        GUI.Label(
+            new Rect(20, 20, 400, 60),
+            $"Speed: {velocidad:F2}",
+            debugStyle
+        );
+    }
 }
