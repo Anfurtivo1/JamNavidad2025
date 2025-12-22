@@ -3,11 +3,9 @@ using UnityEngine.InputSystem;
 
 public class HorseController : MonoBehaviour
 {
-    private GUIStyle debugStyle;
-
     [Header("Componentes")]
     public Rigidbody2D rb;
-    public Transform horseVisual; // hijo con el sprite
+    public Transform horseVisual; // Hijo con el sprite
 
     [Header("Velocidades")]
     public float baseSpeed = 12f;
@@ -27,6 +25,7 @@ public class HorseController : MonoBehaviour
     private bool grounded;
     private bool accelerating;
     private float currentSpeed;
+    private Vector2 groundNormal = Vector2.up;
 
     void Awake()
     {
@@ -36,37 +35,27 @@ public class HorseController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // --- Detectar suelo ---
+        // Detectar suelo
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
 
-        // --- Mantener Rigidbody sin rotación ---
-        rb.rotation = 0f;
-
-        // --- Determinar velocidad objetivo ---
+        // Velocidad horizontal suave
         float targetSpeed = accelerating ? accelSpeed : baseSpeed;
         float maxDelta = speedChangeRate * Time.fixedDeltaTime;
 
         if (grounded)
-        {
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, maxDelta);
-        }
-        else
-        {
-            // En aire solo perder velocidad suavemente
-            if (currentSpeed > targetSpeed)
-                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, maxDelta * airControl);
-        }
+        else if (currentSpeed > targetSpeed)
+            currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, maxDelta * airControl);
 
-        // --- Aplicar velocidad horizontal ---
+        // Aplicar velocidad horizontal
         rb.linearVelocity = new Vector2(currentSpeed, rb.linearVelocity.y);
+    }
 
-        // --- Rotación visual del sprite ---
-        if (horseVisual != null)
-        {
-            // Ángulo según pendiente / movimiento
-            float angle = Mathf.Atan2(rb.linearVelocity.y, rb.linearVelocity.x) * Mathf.Rad2Deg;
-            horseVisual.rotation = Quaternion.Euler(0, 0, angle);
-        }
+    void Update()
+    {
+        // Rotación visual del sprite según pendiente
+        float angle = Mathf.Atan2(groundNormal.y, groundNormal.x) * Mathf.Rad2Deg;
+        horseVisual.rotation = Quaternion.Lerp(horseVisual.rotation, Quaternion.Euler(0, 0, angle - 90f), Time.deltaTime * 8f);
     }
 
     #region Input
@@ -84,34 +73,6 @@ public class HorseController : MonoBehaviour
     }
     #endregion
 
-    
-    void OnGUI()
-    {
-        debugStyle = new GUIStyle(GUI.skin.label);
-        debugStyle.fontSize = 40;
-        debugStyle.normal.textColor = Color.white;
-
-        string velocidad = rb.linearVelocity.x.ToString("F2");
-
-        if (velocidad[0] == '-')
-        {
-            velocidad = "0";
-            GUI.Label(
-                new Rect(20, 70, 400, 60),
-                "¡Estás yendo hacia atrás!",
-                debugStyle
-            );
-            
-        }
-
-
-        GUI.Label(
-            new Rect(20, 20, 400, 60),
-            $"Speed: {velocidad:F2}",
-            debugStyle
-        );
-    }
-
     void OnDrawGizmosSelected()
     {
         if (groundCheck == null) return;
@@ -119,6 +80,9 @@ public class HorseController : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
     }
 
+    void OnCollisionStay2D(Collision2D col)
+    {
+        if (col.collider.CompareTag("Floor"))
+            groundNormal = col.contacts[0].normal;
+    }
 }
-
-
