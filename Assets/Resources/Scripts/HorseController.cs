@@ -3,55 +3,73 @@ using UnityEngine.InputSystem;
 
 public class HorseController : MonoBehaviour
 {
-    Rigidbody2D rb;
-    GUIStyle debugStyle;
+    private GUIStyle debugStyle;
+
+    [Header("Componentes")]
+    public Rigidbody2D rb;
+    public Transform horseVisual; // hijo con el sprite
 
     [Header("Velocidades")]
-    public float baseSpeed = 12f;     // Velocidad mínima constante
-    public float accelSpeed = 20f;    // Velocidad al acelerar
-    public float speedChangeRate = 18f; // Qué tan rápido se ajusta la velocidad
-    public float airControl = 0.5f;   // Control en el aire
-    private float currentSpeed;
-
+    public float baseSpeed = 12f;
+    public float accelSpeed = 20f;
+    public float speedChangeRate = 18f;
+    public float airControl = 0.5f;
 
     [Header("Salto")]
     public float jumpForce = 12f;
 
-    [Header("Estado")]
-    public bool grounded;
-    public bool accelerating;
+    [Header("Ground Check")]
+    public Transform groundCheck;
+    public float groundRadius = 0.1f;
+    public LayerMask groundLayer;
+
+    // Estado
+    private bool grounded;
+    private bool accelerating;
+    private float currentSpeed;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        currentSpeed = baseSpeed; // Inicializamos con la velocidad base
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        currentSpeed = baseSpeed;
     }
 
     void FixedUpdate()
     {
-        // Determinar la velocidad objetivo
-        float targetSpeed = accelerating ? accelSpeed : baseSpeed;
+        // --- Detectar suelo ---
+        grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
 
-        // Calculamos la cantidad máxima de cambio por frame
+        // --- Mantener Rigidbody sin rotación ---
+        rb.rotation = 0f;
+
+        // --- Determinar velocidad objetivo ---
+        float targetSpeed = accelerating ? accelSpeed : baseSpeed;
         float maxDelta = speedChangeRate * Time.fixedDeltaTime;
 
         if (grounded)
         {
-            // En tierra: ajustamos velocidad suavemente hacia la targetSpeed
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, maxDelta);
         }
         else
         {
-            // En aire: control limitado, puede ganar o perder velocidad más despacio
-            currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, maxDelta * airControl);
+            // En aire solo perder velocidad suavemente
+            if (currentSpeed > targetSpeed)
+                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, maxDelta * airControl);
         }
 
-        // Aplicar la velocidad horizontal mientras mantenemos la vertical
+        // --- Aplicar velocidad horizontal ---
         rb.linearVelocity = new Vector2(currentSpeed, rb.linearVelocity.y);
+
+        // --- Rotación visual del sprite ---
+        if (horseVisual != null)
+        {
+            // Ángulo según pendiente / movimiento
+            float angle = Mathf.Atan2(rb.linearVelocity.y, rb.linearVelocity.x) * Mathf.Rad2Deg;
+            horseVisual.rotation = Quaternion.Euler(0, 0, angle);
+        }
     }
 
-    #region INPUT
-
+    #region Input
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && grounded)
@@ -64,23 +82,9 @@ public class HorseController : MonoBehaviour
     {
         accelerating = ctx.ReadValueAsButton();
     }
-
     #endregion
 
-    #region SUELO
-
-    void OnCollisionStay2D(Collision2D col)
-    {
-        grounded = col.contacts[0].normal.y > 0.6f;
-    }
-
-    void OnCollisionExit2D(Collision2D col)
-    {
-        grounded = false;
-    }
-
-    #endregion
-
+    
     void OnGUI()
     {
         debugStyle = new GUIStyle(GUI.skin.label);
@@ -107,4 +111,14 @@ public class HorseController : MonoBehaviour
             debugStyle
         );
     }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck == null) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
+    }
+
 }
+
+
