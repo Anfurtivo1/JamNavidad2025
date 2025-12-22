@@ -8,8 +8,9 @@ public class HorseController : MonoBehaviour
     public Transform horseVisual; // Hijo con el sprite
 
     [Header("Velocidades")]
-    public float baseSpeed = 12f;
-    public float accelSpeed = 20f;
+    public float baseSpeed = 15f;
+    public float accelSpeed = 25f;
+    public float decelSpeed = 5f;
     public float speedChangeRate = 18f;
     public float airControl = 0.5f;
 
@@ -24,6 +25,8 @@ public class HorseController : MonoBehaviour
     // Estado
     private bool grounded;
     private bool accelerating;
+    private bool decelerating;
+    public bool isZooming;
     private float currentSpeed;
     private Vector2 groundNormal = Vector2.up;
 
@@ -35,11 +38,26 @@ public class HorseController : MonoBehaviour
 
     void FixedUpdate()
     {
+        isZooming = false;
+        float targetSpeed;
         // Detectar suelo
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
 
         // Velocidad horizontal suave
-        float targetSpeed = accelerating ? accelSpeed : baseSpeed;
+        if (accelerating)
+        {
+            targetSpeed = accelSpeed;
+
+        }else if (decelerating)
+        {
+            targetSpeed = decelSpeed;
+            isZooming = true;
+        }
+        else
+        {
+            targetSpeed = baseSpeed;
+        }
+
         float maxDelta = speedChangeRate * Time.fixedDeltaTime;
 
         if (grounded)
@@ -70,6 +88,11 @@ public class HorseController : MonoBehaviour
     public void OnAccelerate(InputAction.CallbackContext ctx)
     {
         accelerating = ctx.ReadValueAsButton();
+    }
+
+    public void OnDecelerate(InputAction.CallbackContext ctx)
+    {
+        decelerating = ctx.ReadValueAsButton();
     }
     #endregion
 

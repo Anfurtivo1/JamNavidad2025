@@ -10,10 +10,11 @@ public class CameraFollow2D : MonoBehaviour
     [Header("Zoom")]
     public float normalSize = 5f;  
     public float zoomedOutSize = 15f; 
-    public float zoomSpeed = 2f;   
+    public float zoomSpeed = 2f;
+    public HorseController horse;
 
     private Camera cam;
-    private bool zoomedOut = false;
+    private bool zoomedOut;
 
     void Awake()
     {
@@ -23,6 +24,7 @@ public class CameraFollow2D : MonoBehaviour
 
     void LateUpdate()
     {
+        zoomedOut = horse.isZooming; // para detectar si está decelerando o no
         if (target == null) return;
 
         // --- Seguimiento ---
@@ -35,7 +37,7 @@ public class CameraFollow2D : MonoBehaviour
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, zoomSpeed * Time.deltaTime);
     }
 
-    // --- Función toggle ---
+    // --- Función toggle --- No utilizado
     public void ToggleZoom()
     {
         zoomedOut = !zoomedOut;
