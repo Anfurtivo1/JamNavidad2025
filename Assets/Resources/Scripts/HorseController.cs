@@ -176,6 +176,11 @@ public class HorseController : MonoBehaviour
             StartCoroutine(HitRoutine());
             Destroy(collision.collider.gameObject);
         }
+        
+        if (collision.collider.CompareTag("NextLevel"))
+        {
+            SceneManager.LoadScene(1);
+        }
     }
 
     IEnumerator HitRoutine()
