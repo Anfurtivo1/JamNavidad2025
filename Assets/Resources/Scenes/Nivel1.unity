@@ -1608,8 +1608,8 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: -3.32}
   smoothSpeed: 5
   normalSize: 8
-  zoomedOutSize: 10
-  zoomSpeed: 2
+  zoomedOutSize: 20
+  zoomSpeed: 19.03
   horse: {fileID: 7991588666042368210}
 --- !u!1 &668769324
 GameObject:
@@ -3457,7 +3457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: decelSpeed
-      value: 60
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: groundCheck
@@ -3473,7 +3473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: speedChangeRate
-      value: 23.08
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: groundLayer.m_Bits

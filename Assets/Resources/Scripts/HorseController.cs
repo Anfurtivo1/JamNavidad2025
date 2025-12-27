@@ -47,6 +47,8 @@ public class HorseController : MonoBehaviour
     private bool hitLocked = false;
     private SpriteRenderer spriteRenderer;
 
+    public bool levelPassed = false;
+
     void Awake()
     {
         if (rb == null)
@@ -148,6 +150,7 @@ public class HorseController : MonoBehaviour
     public void OnDecelerate(InputAction.CallbackContext ctx)
     {
         decelerating = ctx.ReadValueAsButton();
+        Debug.Log("Deceleramos");
     }
 
     public void OnReset(InputAction.CallbackContext ctx)
@@ -179,7 +182,8 @@ public class HorseController : MonoBehaviour
         
         if (collision.collider.CompareTag("NextLevel"))
         {
-            SceneManager.LoadScene(1);
+            //SceneManager.LoadScene(1);
+            levelPassed = true;
         }
     }
 
