@@ -1579,10 +1579,11 @@ MonoBehaviour:
   target: {fileID: 7991588666042368204}
   offset: {x: 0, y: 0, z: -3.32}
   smoothSpeed: 5
-  normalSize: 8
-  zoomedOutSize: 10
+  minSize: 5
+  maxSize: 15
   zoomSpeed: 2
   horse: {fileID: 7991588666042368210}
+  offsetMultiplier: 1
 --- !u!1 &520015616
 GameObject:
   m_ObjectHideFlags: 0
