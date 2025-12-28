@@ -12,7 +12,7 @@ public class HorseController : MonoBehaviour
     [Header("Velocidades")]
     public float baseSpeed = 15f;
     public float accelSpeed = 25f;
-    public float decelSpeed = 6f; // velocidad de frenado / zoom
+    public float decelSpeed = 6f;
     public float speedChangeRate = 18f;
     public float airControl = 0.5f;
 
@@ -31,7 +31,6 @@ public class HorseController : MonoBehaviour
     private bool grounded;
     private bool accelerating;
     private bool decelerating;
-    public bool isZooming;
     public float currentSpeed;
 
     private Vector2 groundNormal = Vector2.up;
@@ -40,12 +39,12 @@ public class HorseController : MonoBehaviour
     public float hitDuration = 0.5f;
     public float blinkInterval = 0.1f;
     public float hitSpeedMultiplier = 0.5f;
-    public float minHitSpeed = 4f;     // Nunca baja de esto
-    public float hitSlowMultiplier = 0.85f; // Qué porcentaje quita al máximo
-
+    public float minHitSpeed = 4f;
+    public float hitSlowMultiplier = 0.85f;
 
     private bool hitLocked = false;
     private SpriteRenderer spriteRenderer;
+    public CameraFollow2D cameraFollow; // Arrastra tu cámara aquí
 
     public bool levelPassed = false;
 
@@ -64,9 +63,11 @@ public class HorseController : MonoBehaviour
 
     void FixedUpdate()
     {
-        isZooming = false;
-
-        grounded = Physics2D.OverlapCircle(groundCheck.position,groundRadius,groundLayer);
+        grounded = Physics2D.OverlapCircle(
+            groundCheck.position,
+            groundRadius,
+            groundLayer
+        );
 
         float targetSpeed = baseSpeed;
 
@@ -77,11 +78,6 @@ public class HorseController : MonoBehaviour
         else if (decelerating && !hitLocked)
         {
             targetSpeed = decelSpeed;
-            isZooming = true;
-        }
-        else
-        {
-            targetSpeed = baseSpeed;
         }
 
         if (hitLocked)
@@ -142,16 +138,21 @@ public class HorseController : MonoBehaviour
         }
     }
 
+
     public void OnAccelerate(InputAction.CallbackContext ctx)
     {
         accelerating = ctx.ReadValueAsButton();
+        if (cameraFollow != null)
+            cameraFollow.offsetMultiplier = accelerating ? 1.5f : 1f; // Más offset al pulsar D
     }
 
     public void OnDecelerate(InputAction.CallbackContext ctx)
     {
         decelerating = ctx.ReadValueAsButton();
-        Debug.Log("Deceleramos");
+        if (cameraFollow != null)
+            cameraFollow.offsetMultiplier = decelerating ? 0.7f : 1f; // Menos offset al pulsar A
     }
+
 
     public void OnReset(InputAction.CallbackContext ctx)
     {
@@ -179,10 +180,9 @@ public class HorseController : MonoBehaviour
             StartCoroutine(HitRoutine());
             Destroy(collision.collider.gameObject);
         }
-        
+
         if (collision.collider.CompareTag("NextLevel"))
         {
-            //SceneManager.LoadScene(1);
             levelPassed = true;
         }
     }
@@ -192,15 +192,20 @@ public class HorseController : MonoBehaviour
         hitLocked = true;
 
         // Normalizamos velocidad (0 → 1)
-        float speed01 = Mathf.InverseLerp(baseSpeed, accelSpeed, currentSpeed);
+        float speed01 = Mathf.InverseLerp(
+            baseSpeed,
+            accelSpeed,
+            currentSpeed
+        );
 
         // Cuanto más rápido, más castigo
-        float slowFactor = Mathf.Lerp(0.25f, hitSlowMultiplier, speed01);
+        float slowFactor = Mathf.Lerp(
+            0.25f,
+            hitSlowMultiplier,
+            speed01
+        );
 
-        // Aplicar reducción
         currentSpeed *= (1f - slowFactor);
-
-        // Nunca totalmente parado
         currentSpeed = Mathf.Max(currentSpeed, minHitSpeed);
 
         float elapsed = 0f;
@@ -215,7 +220,6 @@ public class HorseController : MonoBehaviour
         spriteRenderer.enabled = true;
         hitLocked = false;
     }
-
 
     void OnDrawGizmosSelected()
     {
