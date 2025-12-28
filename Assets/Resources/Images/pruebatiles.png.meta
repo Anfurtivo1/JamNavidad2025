@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 0e18b3172cfe166c2a1640675920bf62
+guid: f637e530fe8615b69addbe14a0efc5fa
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3791501285766627913
-    second: simple_grass_tileset_0
+      213: 128780024274392246
+    second: pruebatiles_0
+  - first:
+      213: -8975745864052238647
+    second: pruebatiles_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,29 +116,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: simple_grass_tileset_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: aa585efe25b4e6773a0d8a241d229fe4
-      internalID: -3791501285766627913
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: simple_grass_tileset_1
+      name: pruebatiles_0
       rect:
         serializedVersion: 2
         x: 16
@@ -148,16 +129,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 17632fd8648c3c885ba3cec831e648b0
-      internalID: 1473552017
+      spriteID: 6b49a01ffb489c100800000000000000
+      internalID: 128780024274392246
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: simple_grass_tileset_2
+      name: pruebatiles_1
       rect:
         serializedVersion: 2
         x: 32
@@ -170,16 +151,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ca099d719ebeec187b2581c61dd54c44
-      internalID: 198546943
+      spriteID: 9c61cf231bebf6380800000000000000
+      internalID: -8975745864052238647
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: simple_grass_tileset_3
+      name: pruebatiles_2
       rect:
         serializedVersion: 2
         x: 0
@@ -194,14 +175,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 519f34f97b8d4296e82b707ca255b41a
-      internalID: 577402058
+      spriteID: b3af072bc80637df2b5415c8e7c23390
+      internalID: 1971829983
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: simple_grass_tileset_4
+      name: pruebatiles_3
       rect:
         serializedVersion: 2
         x: 16
@@ -216,14 +197,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74b904128be1eee69a0458496d5bc9f6
-      internalID: -430001088
+      spriteID: 14ea7ac395ed6ba58ac7ccc535bfc0cc
+      internalID: -1727922577
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: simple_grass_tileset_5
+      name: pruebatiles_4
       rect:
         serializedVersion: 2
         x: 32
@@ -238,14 +219,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c1832a43ed46245689ce1ae693e6a06
-      internalID: 1356375174
+      spriteID: 53198ddc1cad0712bbdc06e174b7d15b
+      internalID: -1756224312
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: simple_grass_tileset_6
+      name: pruebatiles_5
       rect:
         serializedVersion: 2
         x: 0
@@ -260,14 +241,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: acb4dd637a152f05684f8bc4414155b1
-      internalID: 200833775
+      spriteID: 8e5054cb376644b15bd71530bd9f8cd5
+      internalID: 1813589273
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: simple_grass_tileset_7
+      name: pruebatiles_6
       rect:
         serializedVersion: 2
         x: 16
@@ -282,14 +263,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: faf8a07c08187b504bf562e80df006d3
-      internalID: -1184910777
+      spriteID: fcdd639c46d4971fbaa3d4978f211536
+      internalID: 865876520
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: simple_grass_tileset_8
+      name: pruebatiles_7
       rect:
         serializedVersion: 2
         x: 32
@@ -304,8 +285,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 428848ea5f7a6871e8181ebad6502c69
-      internalID: -1952613462
+      spriteID: 8f366fc1f6f1fd72d95e3573d17fe7cd
+      internalID: -1824135805
       vertices: []
       indices: 
       edges: []
@@ -314,7 +295,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: baad4503bd45d953ba7514786c53148f
+    spriteID: 9fb5c0a28547cbae6b1cf9f6d33e7de8
     internalID: 0
     vertices: []
     indices: 
@@ -326,15 +307,14 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      simple_grass_tileset_0: -3791501285766627913
-      simple_grass_tileset_1: 1473552017
-      simple_grass_tileset_2: 198546943
-      simple_grass_tileset_3: 577402058
-      simple_grass_tileset_4: -430001088
-      simple_grass_tileset_5: 1356375174
-      simple_grass_tileset_6: 200833775
-      simple_grass_tileset_7: -1184910777
-      simple_grass_tileset_8: -1952613462
+      pruebatiles_0: 128780024274392246
+      pruebatiles_1: -8975745864052238647
+      pruebatiles_2: 1971829983
+      pruebatiles_3: -1727922577
+      pruebatiles_4: -1756224312
+      pruebatiles_5: 1813589273
+      pruebatiles_6: 865876520
+      pruebatiles_7: -1824135805
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -11,12 +11,16 @@ public class CameraFollow2D : MonoBehaviour
     public float minSize = 5f;
     public float maxSize = 15f;
     public float zoomSpeed = 2f;
+    private float zoomVelocity;
 
     [Header("Referencia")]
     public HorseController horse;
 
     [Header("Offset dinámico")]
-    [Range(0f, 2f)] public float offsetMultiplier = 1f; // Este valor se ajusta desde HorseController
+    [Range(0f, 2f)] public float offsetMultiplier = 1f; // Valor actual
+    [HideInInspector] public float targetOffsetMultiplier = 1f; // Valor objetivo
+    public float offsetSmoothSpeed = 3f;                  // Velocidad de interpolación del offset
+    private Vector3 offsetAdjusted;
 
     private Camera cam;
 
@@ -29,18 +33,18 @@ public class CameraFollow2D : MonoBehaviour
     {
         if (target == null || horse == null) return;
 
-        // --- Zoom por velocidad ---
-        float speed01 = Mathf.InverseLerp(
-            horse.minSpeed,
-            horse.accelSpeed,
-            horse.currentSpeed
-        );
-
+        // --- Zoom por velocidad (suavizado) ---
+        float speed01 = Mathf.InverseLerp(horse.minSpeed, horse.accelSpeed, horse.currentSpeed);
         float targetSize = Mathf.Lerp(maxSize, minSize, speed01);
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, zoomSpeed * Time.deltaTime);
 
-        // --- Ajustar offset proporcional al zoom y multiplicador dinámico ---
-        Vector3 offsetAdjusted = offset * (cam.orthographicSize / maxSize) * offsetMultiplier;
+        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, targetSize, ref zoomVelocity, 0.3f);
+
+        // --- Interpolamos suavemente el offsetMultiplier ---
+        offsetMultiplier = Mathf.Lerp(offsetMultiplier, targetOffsetMultiplier, offsetSmoothSpeed * Time.deltaTime);
+
+        // --- Offset suavizado ---
+        Vector3 targetOffset = offset * (cam.orthographicSize / maxSize) * offsetMultiplier;
+        offsetAdjusted = Vector3.Lerp(offsetAdjusted, targetOffset, offsetSmoothSpeed * Time.deltaTime);
 
         // --- Seguimiento centrando al jugador con offset ---
         Vector3 desiredPosition = target.position + offsetAdjusted;
