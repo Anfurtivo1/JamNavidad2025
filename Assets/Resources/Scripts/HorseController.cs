@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -41,6 +42,11 @@ public class HorseController : MonoBehaviour
     public float hitSpeedMultiplier = 0.5f;
     public float minHitSpeed = 4f;
     public float hitSlowMultiplier = 0.85f;
+    public int contadorCollectables = 0;
+
+    public GameObject[] collectableSprites;
+
+    public TextMeshProUGUI speedText;
 
     private bool hitLocked = false;
     private SpriteRenderer spriteRenderer;
@@ -59,10 +65,12 @@ public class HorseController : MonoBehaviour
         currentSpeed = baseSpeed;
 
         rb.freezeRotation = true;
+
     }
 
     void FixedUpdate()
     {
+        speedText.text = $"Speed: {currentSpeed:F1}";
         grounded = Physics2D.OverlapCircle(
             groundCheck.position,
             groundRadius,
@@ -185,6 +193,17 @@ public class HorseController : MonoBehaviour
         {
             levelPassed = true;
         }
+
+        if (collision.collider.CompareTag("Collectable"))
+        {
+            Destroy(collision.collider.gameObject);
+            contadorCollectables += 1;
+            if (contadorCollectables - 1 < collectableSprites.Length)
+            {
+                collectableSprites[contadorCollectables - 1].SetActive(true);
+            }
+        }
+
     }
 
     IEnumerator HitRoutine()
