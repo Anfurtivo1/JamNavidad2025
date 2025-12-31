@@ -204,6 +204,11 @@ public class HorseController : MonoBehaviour
             }
         }
 
+        if (collision.collider.CompareTag("Respawn"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
     }
 
     IEnumerator HitRoutine()
