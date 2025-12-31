@@ -54,8 +54,12 @@ public class HorseController : MonoBehaviour
 
     public bool levelPassed = false;
 
+    public Animator respawnAnim;
+
     void Awake()
     {
+        //Animator respawnAnim = this.GetComponent<Animator>();
+
         if (rb == null)
         {
             rb = GetComponent<Rigidbody2D>();
@@ -196,17 +200,20 @@ public class HorseController : MonoBehaviour
 
         if (collision.collider.CompareTag("Collectable"))
         {
-            Destroy(collision.collider.gameObject);
+            collision.gameObject.GetComponent<Animator>().SetTrigger("Collected");
+
             contadorCollectables += 1;
             if (contadorCollectables - 1 < collectableSprites.Length)
             {
                 collectableSprites[contadorCollectables - 1].SetActive(true);
             }
+            //Destroy(collision.collider.gameObject);
         }
 
         if (collision.collider.CompareTag("Respawn"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            respawnAnim.SetTrigger("HorseFell");
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
     }
