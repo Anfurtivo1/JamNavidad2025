@@ -9,6 +9,9 @@ public class HorseController : MonoBehaviour
     [Header("Componentes")]
     public Rigidbody2D rb;
     public Transform horseVisual;
+    public Animator respawnAnim;
+    public Animator estelaAnim;
+    public GameObject estela;
 
     [Header("Velocidades")]
     public float baseSpeed = 15f;
@@ -32,7 +35,7 @@ public class HorseController : MonoBehaviour
     [Header("Estado")]
     private bool grounded;
     private bool accelerating;
-    private bool decelerating;
+    public bool decelerating;
     public float currentSpeed;
 
     private Vector2 groundNormal = Vector2.up;
@@ -55,7 +58,7 @@ public class HorseController : MonoBehaviour
 
     public bool levelPassed = false;
 
-    public Animator respawnAnim;
+    
 
     void Awake()
     {
@@ -116,6 +119,8 @@ public class HorseController : MonoBehaviour
                 targetSpeed,
                 maxDelta
             );
+            estelaAnim.SetBool("Grounded", true);
+            estela.SetActive(true);
         }
         else
         {
@@ -124,6 +129,8 @@ public class HorseController : MonoBehaviour
                 targetSpeed,
                 maxDelta * airControl
             );
+            estelaAnim.SetBool("Grounded", false);
+            estela.SetActive(false);
         }
 
         currentSpeed = Mathf.Max(currentSpeed, minSpeed);
@@ -162,18 +169,54 @@ public class HorseController : MonoBehaviour
 
 
     public void OnAccelerate(InputAction.CallbackContext ctx)
+{
+    accelerating = ctx.ReadValueAsButton();
+
+    if (ctx.performed)
     {
-        accelerating = ctx.ReadValueAsButton();
+        // Al pulsar D
+        estelaAnim.SetBool("Acelerando", true);
+
         if (cameraFollow != null)
-            cameraFollow.offsetMultiplier = accelerating ? 1.5f : 1f; // Más offset al pulsar D
+        {
+            cameraFollow.offsetMultiplier = 1.5f;
+        }
     }
+    else if (ctx.canceled)
+    {
+        // Al SOLTAR D
+        estelaAnim.SetBool("Acelerando", false);
+
+        if (cameraFollow != null)
+        {
+            cameraFollow.offsetMultiplier = 1f;
+        }
+    }
+}
+
 
     public void OnDecelerate(InputAction.CallbackContext ctx)
+{
+    decelerating = ctx.ReadValueAsButton();
+
+    if (ctx.performed)
     {
-        decelerating = ctx.ReadValueAsButton();
+        estelaAnim.SetBool("Acelerando", false);
+
         if (cameraFollow != null)
-            cameraFollow.offsetMultiplier = decelerating ? 0.7f : 1f; // Menos offset al pulsar A
+        {
+            cameraFollow.offsetMultiplier = 0.7f;
+        }
     }
+    else if (ctx.canceled)
+    {
+        if (cameraFollow != null)
+        {
+            cameraFollow.offsetMultiplier = 1f;
+        }
+    }
+}
+
 
 
     public void OnReset(InputAction.CallbackContext ctx)
