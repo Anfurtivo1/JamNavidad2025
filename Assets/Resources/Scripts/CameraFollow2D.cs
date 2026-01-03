@@ -11,7 +11,8 @@ public class CameraFollow2D : MonoBehaviour
     public float minSize = 5f;
     public float regSize = 10f;
     public float maxSize = 20f;
-    public float zoomSpeed = 2f;
+    public float normalZoomSmoothTime = 0.3f;  
+    public float decelZoomSmoothTime = 0.12f;
     private float zoomVelocity;
 
     [Header("Referencia")]
@@ -35,44 +36,36 @@ public class CameraFollow2D : MonoBehaviour
 
         // ZOOM POR VELOCIDAD (POR TRAMOS)
 
-        float speed = Mathf.Clamp(
-            horse.currentSpeed,
-            horse.decelSpeed,
-            horse.accelSpeed
-        );
+        float speed = Mathf.Clamp(horse.currentSpeed, horse.decelSpeed, horse.accelSpeed);
 
         float targetSize;
-
         if (speed <= horse.baseSpeed)
         {
             // decelSpeed a maxSize
             // baseSpeed a regSize
-            float t = Mathf.InverseLerp(
-                horse.decelSpeed,
-                horse.baseSpeed,
-                speed
-            );
+            float t = Mathf.InverseLerp(horse.decelSpeed, horse.baseSpeed, speed);
             targetSize = Mathf.Lerp(maxSize, regSize, t);
         }
         else
         {
             // baseSpeed a regSize
             // accelSpeed a minSize
-            float t = Mathf.InverseLerp(
-                horse.baseSpeed,
-                horse.accelSpeed,
-                speed
-            );
+            float t = Mathf.InverseLerp(horse.baseSpeed, horse.accelSpeed, speed);
             targetSize = Mathf.Lerp(regSize, minSize, t);
         }
 
-        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, targetSize, ref zoomVelocity, 0.3f);
+        // zoom responde más rápido al frenar
+        float smoothTime = horse.decelerating ? decelZoomSmoothTime : normalZoomSmoothTime;
 
+        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, targetSize,  ref zoomVelocity, smoothTime);
 
-        // OFFSET DINÁMICO
-        offsetMultiplier = Mathf.Lerp(offsetMultiplier, targetOffsetMultiplier, offsetSmoothSpeed * Time.deltaTime);
+        // OFFSET DINÁMICO (SUAVIZADO)
+
+        offsetMultiplier = Mathf.Lerp(offsetMultiplier, targetOffsetMultiplier, offsetSmoothSpeed * Time.deltaTime
+        );
 
         Vector3 targetOffset = offset * (cam.orthographicSize / maxSize) * offsetMultiplier;
+
         offsetAdjusted = Vector3.Lerp(offsetAdjusted, targetOffset, offsetSmoothSpeed * Time.deltaTime);
 
         // SEGUIMIENTO DE CÁMARA
@@ -82,5 +75,6 @@ public class CameraFollow2D : MonoBehaviour
 
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
     }
+
 
 }
