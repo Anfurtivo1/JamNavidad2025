@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class HorseController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class HorseController : MonoBehaviour
     public Animator respawnAnim;
     public Animator estelaAnim;
     public GameObject estela;
+    public Image meter;
 
     [Header("Velocidades")]
     public float baseSpeed = 15f;
@@ -20,6 +22,7 @@ public class HorseController : MonoBehaviour
     public float speedAccelRate = 18f;
     public float speedDecelRate = 18f;
     public float airControl = 0.5f;
+    public Sprite[] meterSprites;
 
     [Header("Velocidad mínima absoluta")]
     public float minSpeed = 6f;
@@ -84,6 +87,32 @@ public class HorseController : MonoBehaviour
             groundRadius,
             groundLayer
         );
+
+        if(currentSpeed <= 6)
+        {
+            meter.sprite = meterSprites[1];
+            
+        }
+
+        if(currentSpeed >= 10 && currentSpeed < 20)
+        {
+            meter.sprite = meterSprites[2];
+        }
+
+        if(currentSpeed >= 13 && currentSpeed < 20)
+        {
+            meter.sprite = meterSprites[3];
+        }
+
+        if(currentSpeed >= 15 && currentSpeed < 20)
+        {
+            meter.sprite = meterSprites[4];
+        }
+
+        if(currentSpeed >= 20)
+        {
+            meter.sprite = meterSprites[5];
+        }
 
         float targetSpeed = baseSpeed;
 
