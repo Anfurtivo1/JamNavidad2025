@@ -22,7 +22,6 @@ public class CameraFollow2D : MonoBehaviour
     [HideInInspector] public float targetOffsetMultiplier = 1f; 
     public float offsetSmoothSpeed = 3f;                  // Velocidad de interpolación del offset
     private Vector3 offsetAdjusted;
-
     private Camera cam;
 
     void Awake()

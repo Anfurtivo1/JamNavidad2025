@@ -14,7 +14,8 @@ public class HorseController : MonoBehaviour
     public float baseSpeed = 15f;
     public float accelSpeed = 25f;
     public float decelSpeed = 6f;
-    public float speedChangeRate = 18f;
+    public float speedAccelRate = 18f;
+    public float speedDecelRate = 18f;
     public float airControl = 0.5f;
 
     [Header("Velocidad mínima absoluta")]
@@ -97,7 +98,16 @@ public class HorseController : MonoBehaviour
             targetSpeed *= hitSpeedMultiplier;
         }
 
-        float maxDelta = speedChangeRate * Time.fixedDeltaTime;
+        float changeRate;
+
+        // Si el objetivo está por encima acelera hacia targetSpeed
+        if (targetSpeed > currentSpeed)
+            changeRate = speedAccelRate;
+        else
+            changeRate = speedDecelRate; // incluye frenar y volver a baseSpeed 
+
+        float maxDelta = changeRate * Time.fixedDeltaTime;
+
 
         if (grounded)
         {
