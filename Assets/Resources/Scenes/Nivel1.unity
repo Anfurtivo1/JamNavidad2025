@@ -127048,6 +127048,10 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
+      propertyPath: estela
+      value: 
+      objectReference: {fileID: 629017620}
+    - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: baseSpeed
       value: 10
       objectReference: {fileID: 0}

@@ -9,6 +9,9 @@ public class HorseController : MonoBehaviour
     [Header("Componentes")]
     public Rigidbody2D rb;
     public Transform horseVisual;
+    public Animator respawnAnim;
+    public Animator estelaAnim;
+    public GameObject estela;
 
     [Header("Velocidades")]
     public float baseSpeed = 15f;
@@ -55,8 +58,7 @@ public class HorseController : MonoBehaviour
 
     public bool levelPassed = false;
 
-    public Animator respawnAnim;
-    public Animator estelaAnim;
+    
 
     void Awake()
     {
@@ -117,6 +119,8 @@ public class HorseController : MonoBehaviour
                 targetSpeed,
                 maxDelta
             );
+            estelaAnim.SetBool("Grounded", true);
+            estela.SetActive(true);
         }
         else
         {
@@ -125,6 +129,8 @@ public class HorseController : MonoBehaviour
                 targetSpeed,
                 maxDelta * airControl
             );
+            estelaAnim.SetBool("Grounded", false);
+            estela.SetActive(false);
         }
 
         currentSpeed = Mathf.Max(currentSpeed, minSpeed);
@@ -229,9 +235,6 @@ public class HorseController : MonoBehaviour
         if (col.collider.CompareTag("Floor"))
         {
             groundNormal = col.contacts[0].normal;
-        }else
-        {
-            //estelaAnim.SetBool("Acelerando", false);
         }
     }
 
