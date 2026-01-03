@@ -35,7 +35,7 @@ public class HorseController : MonoBehaviour
     [Header("Estado")]
     private bool grounded;
     private bool accelerating;
-    private bool decelerating;
+    public bool decelerating;
     public float currentSpeed;
 
     private Vector2 groundNormal = Vector2.up;
