@@ -275,14 +275,12 @@ public class HorseController : MonoBehaviour
     {
         hitLocked = true;
 
-        // Normalizamos velocidad (0 → 1)
         float speed01 = Mathf.InverseLerp(
             baseSpeed,
             accelSpeed,
             currentSpeed
         );
 
-        // Cuanto más rápido, más castigo
         float slowFactor = Mathf.Lerp(
             0.25f,
             hitSlowMultiplier,
@@ -293,17 +291,26 @@ public class HorseController : MonoBehaviour
         currentSpeed = Mathf.Max(currentSpeed, minHitSpeed);
 
         float elapsed = 0f;
+        bool visible = true;
+
+        Color originalColor = spriteRenderer.color;
 
         while (elapsed < hitDuration)
         {
-            spriteRenderer.enabled = !spriteRenderer.enabled;
+            visible = !visible;
+
+            Color c = originalColor;
+            c.a = visible ? 1f : 0.2f; // parpadeo suave
+            spriteRenderer.color = c;
+
             yield return new WaitForSeconds(blinkInterval);
             elapsed += blinkInterval;
         }
 
-        spriteRenderer.enabled = true;
+        spriteRenderer.color = originalColor;
         hitLocked = false;
     }
+
 
     void OnDrawGizmosSelected()
     {
