@@ -127072,6 +127072,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
+      propertyPath: estelaAnim
+      value: 
+      objectReference: {fileID: 629017623}
+    - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: groundCheck
       value: 
       objectReference: {fileID: 1365924507}
