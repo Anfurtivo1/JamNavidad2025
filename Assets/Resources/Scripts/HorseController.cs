@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class HorseController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class HorseController : MonoBehaviour
     public Animator respawnAnim;
     public Animator estelaAnim;
     public GameObject estela;
+    public Image meter;
 
     [Header("Velocidades")]
     public float baseSpeed = 15f;
@@ -20,6 +22,7 @@ public class HorseController : MonoBehaviour
     public float speedAccelRate = 18f;
     public float speedDecelRate = 18f;
     public float airControl = 0.5f;
+    public Sprite[] meterSprites;
 
     [Header("Velocidad mínima absoluta")]
     public float minSpeed = 6f;
@@ -84,6 +87,32 @@ public class HorseController : MonoBehaviour
             groundRadius,
             groundLayer
         );
+
+        if(currentSpeed <= 6)
+        {
+            meter.sprite = meterSprites[1];
+            
+        }
+
+        if(currentSpeed >= 10 && currentSpeed < 20)
+        {
+            meter.sprite = meterSprites[2];
+        }
+
+        if(currentSpeed >= 13 && currentSpeed < 20)
+        {
+            meter.sprite = meterSprites[3];
+        }
+
+        if(currentSpeed >= 15 && currentSpeed < 20)
+        {
+            meter.sprite = meterSprites[4];
+        }
+
+        if(currentSpeed >= 20)
+        {
+            meter.sprite = meterSprites[5];
+        }
 
         float targetSpeed = baseSpeed;
 
@@ -275,14 +304,12 @@ public class HorseController : MonoBehaviour
     {
         hitLocked = true;
 
-        // Normalizamos velocidad (0 → 1)
         float speed01 = Mathf.InverseLerp(
             baseSpeed,
             accelSpeed,
             currentSpeed
         );
 
-        // Cuanto más rápido, más castigo
         float slowFactor = Mathf.Lerp(
             0.25f,
             hitSlowMultiplier,
@@ -293,17 +320,26 @@ public class HorseController : MonoBehaviour
         currentSpeed = Mathf.Max(currentSpeed, minHitSpeed);
 
         float elapsed = 0f;
+        bool visible = true;
+
+        Color originalColor = spriteRenderer.color;
 
         while (elapsed < hitDuration)
         {
-            spriteRenderer.enabled = !spriteRenderer.enabled;
+            visible = !visible;
+
+            Color c = originalColor;
+            c.a = visible ? 1f : 0.2f; // parpadeo suave
+            spriteRenderer.color = c;
+
             yield return new WaitForSeconds(blinkInterval);
             elapsed += blinkInterval;
         }
 
-        spriteRenderer.enabled = true;
+        spriteRenderer.color = originalColor;
         hitLocked = false;
     }
+
 
     void OnDrawGizmosSelected()
     {
