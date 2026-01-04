@@ -27,6 +27,19 @@ public class HorseController : MonoBehaviour
     [Header("Velocidad mínima absoluta")]
     public float minSpeed = 6f;
 
+    [Header("Slopes")]
+    public float slopeDownhillBonus = 6f;   // cuánto puede sumar al bajar 
+    public float slopeUphillPenalty = 6f;   // cuánto puede restar al subir
+    [Range(0f, 89f)] public float slopeMaxAngle = 45f;
+
+    [Header("Slope Momentum")]
+    public float slopeAccel = 20f;          // cuánto empuja cuesta abajo 
+    public float slopeBrake = 8f;           // cuánto frena cuesta arriba 
+    public float slopeDrag = 6f;            // rozamiento: cuánto se pierde en plano 
+    public float maxSlopeBonus = 10f;       // máximo extra de velocidad por inercia
+
+    private float slopeBonusSpeed = 0f;
+
     [Header("Salto")]
     public float jumpForce = 12f;
 
@@ -129,6 +142,53 @@ public class HorseController : MonoBehaviour
         {
             targetSpeed *= hitSpeedMultiplier;
         }
+
+
+        //  Slope momentum 
+        if (grounded)
+        {
+            Vector2 tangent = new Vector2(groundNormal.y, -groundNormal.x).normalized;
+            if (tangent.x < 0f) tangent = -tangent;
+
+            // Inclinación
+            float slopeAngle = Vector2.Angle(groundNormal, Vector2.up);
+            float angle01 = Mathf.Clamp01(slopeAngle / slopeMaxAngle);
+
+            bool downhill = tangent.y < 0f; // bajando hacia la derecha
+            bool uphill = tangent.y > 0f; // subiendo hacia la derecha
+
+            if (downhill)
+            {
+                // aceleración proporcional a la inclinación
+                slopeBonusSpeed += slopeAccel * angle01 * Time.fixedDeltaTime;
+            }
+            else if (uphill)
+            {
+                // perdemos bonus al subir
+                slopeBonusSpeed -= slopeBrake * angle01 * Time.fixedDeltaTime;
+            }
+            else
+            {
+                // se va perdiendo poco a poco por rozamiento (ni subir ni bajar)
+                slopeBonusSpeed -= slopeDrag * Time.fixedDeltaTime;
+            }
+        }
+
+        slopeBonusSpeed = Mathf.Clamp(slopeBonusSpeed, 0f, maxSlopeBonus);
+        // si frenamos de golpe cuando vamos muy rapido
+        if (decelerating && !hitLocked)
+        {
+            slopeBonusSpeed = Mathf.MoveTowards(
+                slopeBonusSpeed,
+                0f,
+                (slopeDrag + slopeBrake + 20f) * Time.fixedDeltaTime
+            );
+             slopeBonusSpeed = 0f;
+        }
+
+        targetSpeed += slopeBonusSpeed;
+
+        
 
         float changeRate;
 
