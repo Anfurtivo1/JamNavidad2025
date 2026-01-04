@@ -1175,8 +1175,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0.29
   m_Points:
-  - {x: -0.24999999, y: -0.0012450109}
-  - {x: 100.25, y: -0.0012450109}
+  - {x: -0.24999999, y: -0.0011600128}
+  - {x: 100.25, y: -0.0011600128}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -1200,7 +1200,7 @@ MonoBehaviour:
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
-      height: 2.49
+      height: 2.32
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -1208,7 +1208,7 @@ MonoBehaviour:
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
-      height: 2.49
+      height: 2.32
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -1216,7 +1216,7 @@ MonoBehaviour:
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
-      height: 2.49
+      height: 2.32
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -1241,8 +1241,8 @@ MonoBehaviour:
   m_Creator: {fileID: 0}
   m_Modifiers: []
   m_ColliderSegment:
-  - {x: -0.24999999, y: -0.0012450109}
-  - {x: 100.25, y: -0.0012450109}
+  - {x: -0.24999999, y: -0.0011600128}
+  - {x: 100.25, y: -0.0011600128}
   m_ShadowSegment: []
 --- !u!1971053207 &314649440
 SpriteShapeRenderer:
@@ -1304,7 +1304,7 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
     m_Center: {x: 50, y: 0, z: 0}
-    m_Extent: {x: 50.25, y: 0.6225, z: 0}
+    m_Extent: {x: 50.25, y: 0.58, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1 &391378893
 GameObject:
@@ -6777,7 +6777,8 @@ MonoBehaviour:
   minSize: 5
   regSize: 10
   maxSize: 16
-  zoomSpeed: 552.2
+  normalZoomSmoothTime: 0.3
+  decelZoomSmoothTime: 0.12
   horse: {fileID: 7991588666042368210}
   offsetMultiplier: 1
   targetOffsetMultiplier: 1
@@ -98434,16 +98435,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: 294, y: -130, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 7
-      m_TileSpriteIndex: 7
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   - first: {x: 286, y: -129, z: 0}
     second:
       serializedVersion: 2
@@ -108540,7 +108531,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 9546
+  - m_RefCount: 9545
     m_Data: {fileID: 11400000, guid: 9a8684eae1d5b32408ed47b371b53012, type: 2}
   - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: 10866a1a1a004f841931ae9845017e87, type: 2}
@@ -108563,7 +108554,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 9546
+  - m_RefCount: 9545
     m_Data: {fileID: 1566641070, guid: 79c4b2252832fc746a5ff856826e9c37, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: -1028715747, guid: 79c4b2252832fc746a5ff856826e9c37, type: 3}
@@ -108572,7 +108563,7 @@ Tilemap:
   - m_RefCount: 310
     m_Data: {fileID: -1744292598, guid: 79c4b2252832fc746a5ff856826e9c37, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 9871
+  - m_RefCount: 9870
     m_Data:
       e00: 1
       e01: 0
@@ -108590,8 +108581,26 @@ Tilemap:
       e31: 0
       e32: 0
       e33: 1
+  - m_RefCount: 0
+    m_Data:
+      e00: 0
+      e01: 0
+      e02: -162550.5
+      e03: -2.3622353e+10
+      e10: 0
+      e11: 0
+      e12: 3e-43
+      e13: 8.1e-43
+      e20: -0.00001298709
+      e21: 0
+      e22: 9.254617e+9
+      e23: 2.7946616e-29
+      e30: 4.591e-41
+      e31: 0
+      e32: 8.14e-43
+      e33: 8.11e-43
   m_TileColorArray:
-  - m_RefCount: 9871
+  - m_RefCount: 9870
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -111703,6 +111712,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7188786845144307332, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188786845144307332, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188786845144307332, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188786845144307332, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 760
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188786845144307332, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 488
+      objectReference: {fileID: 0}
     - target: {fileID: 7942014481571746762, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -111838,6 +111867,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 629017620}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
+      propertyPath: minSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: baseSpeed
       value: 10
       objectReference: {fileID: 0}
@@ -111882,6 +111915,10 @@ PrefabInstance:
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
+      propertyPath: slopeMaxAngle
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: speedChangeRate
       value: 25
       objectReference: {fileID: 0}
@@ -111892,6 +111929,10 @@ PrefabInstance:
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: hitSpeedMultiplier
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
+      propertyPath: slopeDownhillBonus
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: meterSprites.Array.size
