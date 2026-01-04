@@ -7,9 +7,10 @@ using TMPro;
 public class Timer : MonoBehaviour
 {
     private float timePassed;
-    private float totalTime; //por hacer aun
+    public float totalTime;
     private HorseController controller;
     public TextMeshProUGUI text;
+    public bool completed = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,8 +20,12 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timePassed = timePassed + Time.deltaTime;
-        text.text = timePassed.ToString("F2"); 
+        if (!completed)
+        {
+            timePassed = timePassed + Time.deltaTime;
+            text.text = timePassed.ToString("F2"); 
+        }
+        
        /* if (controller.levelPassed)
         {
             totalTime = timePassed;

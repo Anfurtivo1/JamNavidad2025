@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -73,6 +74,8 @@ public class HorseController : MonoBehaviour
     public CameraFollow2D cameraFollow; // Arrastra tu cámara aquí
 
     public bool levelPassed = false;
+
+    public Timer timer;
 
     
 
@@ -337,7 +340,27 @@ public class HorseController : MonoBehaviour
 
         if (collision.collider.CompareTag("NextLevel"))
         {
+            string tiempoTotal = timer.text.text.Trim().Replace(',', '.');
+
+            timer.totalTime = float.Parse(tiempoTotal, NumberStyles.Float, CultureInfo.InvariantCulture);
+
+            timer.completed = true;
+
+            Debug.Log("El tiempo final fue de: "+ timer.totalTime);
             levelPassed = true;
+
+            //estrella1 = true;
+
+            if ( contadorCollectables >= 3)
+            {
+                //estrella2 = true;
+            }
+
+            if (SceneManager.GetActiveScene().buildIndex == 1 && timer.totalTime < 10)//Es el primer nivel, el 0 sería el menu principal
+            {
+                //estrella3 = true;
+            }
+
         }
 
         if (collision.collider.CompareTag("Collectable"))

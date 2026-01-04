@@ -7665,81 +7665,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &760769481
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 760769482}
-  - component: {fileID: 760769484}
-  - component: {fileID: 760769483}
-  m_Layer: 5
-  m_Name: VelocityMeter1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &760769482
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760769481}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.7157, y: 1.7157, z: 1.7157}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1858868343}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 763, y: -353}
-  m_SizeDelta: {x: 211.564, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &760769483
+--- !u!114 &760769483 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 7016109441673084752, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
+  m_PrefabInstance: {fileID: 4577115621808545413}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760769481}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 6538463097373709082, guid: 5e3a5087bd24a12869bebc862c073827, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &760769484
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760769481}
-  m_CullTransparentMesh: 1
 --- !u!1001 &780941191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -108812,7 +108748,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9220c64e88a876f458a8fefa76e250d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTime: 0
   text: {fileID: 1817634460}
+  completed: 0
 --- !u!4 &1504239845
 Transform:
   m_ObjectHideFlags: 0
@@ -110452,11 +110390,6 @@ SpriteShapeRenderer:
     m_Center: {x: 22.616528, y: -15.184063, z: 0}
     m_Extent: {x: 4.3294373, y: 19.685322, z: 0}
   m_SpriteSortPoint: 0
---- !u!224 &1858868343 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 305123464348376088, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
-  m_PrefabInstance: {fileID: 4577115621808545413}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1891648968
 GameObject:
   m_ObjectHideFlags: 0
@@ -111771,10 +111704,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 1460517511140304616, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
     - {fileID: 8824012091897592835, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 305123464348376088, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 760769482}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
 --- !u!1001 &7940195326139175605
@@ -111862,6 +111792,10 @@ PrefabInstance:
       propertyPath: meter
       value: 
       objectReference: {fileID: 760769483}
+    - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
+      propertyPath: timer
+      value: 
+      objectReference: {fileID: 1504239844}
     - target: {fileID: 97511050987624241, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: estela
       value: 
