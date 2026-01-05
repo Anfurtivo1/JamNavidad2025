@@ -15,6 +15,7 @@ public class HorseController : MonoBehaviour
     public Animator estelaAnim;
     public GameObject estela;
     public Image meter;
+    public Sprite collecionableImage;
     public TextMeshProUGUI speedText;
     public GameObject[] collectableSprites;
     private bool hitLocked = false;
@@ -413,9 +414,9 @@ public class HorseController : MonoBehaviour
             contadorCollectables += 1;
             if (contadorCollectables - 1 < collectableSprites.Length)
             {
-                collectableSprites[contadorCollectables - 1].SetActive(true);
+                //collectableSprites[contadorCollectables - 1].SetActive(true);
+                collectableSprites[contadorCollectables - 1].GetComponent<Image>().sprite = collecionableImage;
             }
-            //Destroy(collision.collider.gameObject);
         }
 
         if (collision.collider.CompareTag("Respawn"))
