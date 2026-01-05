@@ -340,7 +340,7 @@ public class HorseController : MonoBehaviour
         if (collision.collider.CompareTag("Obstacle") && !hitLocked)
         {
             StartCoroutine(HitRoutine());
-            Destroy(collision.collider.gameObject);
+            Destroy(collision.collider);
         }
 
         if (collision.collider.CompareTag("NextLevel"))
