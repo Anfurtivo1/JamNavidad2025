@@ -21,6 +21,7 @@ public class HorseController : MonoBehaviour
     private bool hitLocked = false;
     private SpriteRenderer spriteRenderer;
     public CameraFollow2D cameraFollow;
+    public MenuController menu;
 
     [Header("Velocidades")]
     public float baseSpeed = 15f;
@@ -80,7 +81,7 @@ public class HorseController : MonoBehaviour
     bool estrella2Collecionables = false;
     bool estrella3Tiempo = false;
 
-
+    //Vector3(182.533005,-96.3720016,0) Posicion jugador
 
     void Awake()
     {
@@ -316,9 +317,7 @@ public class HorseController : MonoBehaviour
 
     public void OnReset(InputAction.CallbackContext ctx)
     {
-        SceneManager.LoadScene(
-            SceneManager.GetActiveScene().buildIndex
-        );
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         Time.timeScale = 1f;
     }
@@ -343,6 +342,9 @@ public class HorseController : MonoBehaviour
 
         if (collision.collider.CompareTag("NextLevel"))
         {
+
+            menu.menuWin.SetActive(true);
+
             string tiempoTotal = timer.text.text.Trim().Replace(',', '.');
 
             timer.totalTime = float.Parse(tiempoTotal, NumberStyles.Float, CultureInfo.InvariantCulture);
@@ -377,33 +379,43 @@ public class HorseController : MonoBehaviour
             if (estrella1Nivel && estrella2Collecionables && estrella3Tiempo)
             {
                 Debug.Log("Se han conseguido las tres estrellas");
+                menu.listaEstrellas[0].SetActive(true);
+                menu.listaEstrellas[1].SetActive(true);
+                menu.listaEstrellas[2].SetActive(true);
             }
             else if (estrella1Nivel && estrella2Collecionables)
             {
                 Debug.Log("Se han conseguido la primera y la segunda estrella");
+                menu.listaEstrellas[0].SetActive(true);
+                menu.listaEstrellas[1].SetActive(true);
             }
             else if (estrella1Nivel && estrella3Tiempo)
             {
                 Debug.Log("Se han conseguido la primera y la tercera estrella");
+                menu.listaEstrellas[0].SetActive(true);
+                menu.listaEstrellas[2].SetActive(true);
             }
             else if (estrella2Collecionables && estrella3Tiempo)
             {
                 Debug.Log("Se han conseguido la segunda y la tercera estrella");
+                menu.listaEstrellas[1].SetActive(true);
+                menu.listaEstrellas[2].SetActive(true);
             }
             else if (estrella1Nivel)
             {
                 Debug.Log("Solo se ha conseguido la primera estrella");
+                menu.listaEstrellas[0].SetActive(true);
             }
             else if (estrella2Collecionables)
             {
                 Debug.Log("Solo se ha conseguido la segunda estrella");
+                menu.listaEstrellas[1].SetActive(true);
             }
             else if (estrella3Tiempo)
             {
                 Debug.Log("Solo se ha conseguido la tercera estrella");
+                menu.listaEstrellas[2].SetActive(true);
             }
-
-
 
         }
 
