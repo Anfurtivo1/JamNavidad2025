@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Microsoft.Unity.VisualStudio.Editor;
 
 public class Timer : MonoBehaviour
 {
@@ -11,11 +12,8 @@ public class Timer : MonoBehaviour
     private HorseController controller;
     public TextMeshProUGUI text;
     public bool completed = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public GameObject stopWatch;
+    public Animator animator;
 
     // Update is called once per frame
     void Update()
@@ -23,12 +21,14 @@ public class Timer : MonoBehaviour
         if (!completed)
         {
             timePassed = timePassed + Time.deltaTime;
-            text.text = timePassed.ToString("F2"); 
+            text.text = timePassed.ToString("F2");
+
+            int seconds = Mathf.FloorToInt(timePassed);
+
+            if(seconds % 10 == 0)
+            {
+                animator.SetTrigger("Moverse");
+            }
         }
-        
-       /* if (controller.levelPassed)
-        {
-            totalTime = timePassed;
-        } */
     }
 }
