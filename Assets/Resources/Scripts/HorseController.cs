@@ -16,8 +16,10 @@ public class HorseController : MonoBehaviour
     public GameObject estela;
     public Image meter;
     public Sprite collecionableImage;
+    public Sprite vidaImage;
     public TextMeshProUGUI speedText;
     public GameObject[] collectableSprites;
+    public GameObject[] vidasSprites;
     private bool hitLocked = false;
     private SpriteRenderer spriteRenderer;
     public CameraFollow2D cameraFollow;
@@ -80,6 +82,7 @@ public class HorseController : MonoBehaviour
     bool estrella1Nivel = false;
     bool estrella2Collecionables = false;
     bool estrella3Tiempo = false;
+    public int vidas = 3;
 
     //Vector3(182.533005,-96.3720016,0) Posicion jugador
 
@@ -441,42 +444,60 @@ public class HorseController : MonoBehaviour
 
     IEnumerator HitRoutine()
     {
-        hitLocked = true;
 
-        float speed01 = Mathf.InverseLerp(
-            baseSpeed,
-            accelSpeed,
-            currentSpeed
-        );
-
-        float slowFactor = Mathf.Lerp(
-            0.25f,
-            hitSlowMultiplier,
-            speed01
-        );
-
-        currentSpeed *= (1f - slowFactor);
-        currentSpeed = Mathf.Max(currentSpeed, minHitSpeed);
-
-        float elapsed = 0f;
-        bool visible = true;
-
-        Color originalColor = spriteRenderer.color;
-
-        while (elapsed < hitDuration)
+        if(vidas > 0)
         {
-            visible = !visible;
+            vidas--;
 
-            Color c = originalColor;
-            c.a = visible ? 1f : 0.2f; // parpadeo suave
-            spriteRenderer.color = c;
+            vidasSprites[vidas].GetComponent<Image>().sprite = vidaImage;
 
-            yield return new WaitForSeconds(blinkInterval);
-            elapsed += blinkInterval;
+            hitLocked = true;
+
+            float speed01 = Mathf.InverseLerp(
+                baseSpeed,
+                accelSpeed,
+                currentSpeed
+            );
+
+            float slowFactor = Mathf.Lerp(
+                0.25f,
+                hitSlowMultiplier,
+                speed01
+            );
+
+            currentSpeed *= (1f - slowFactor);
+            currentSpeed = Mathf.Max(currentSpeed, minHitSpeed);
+
+            float elapsed = 0f;
+            bool visible = true;
+
+            Color originalColor = spriteRenderer.color;
+
+            while (elapsed < hitDuration)
+            {
+                visible = !visible;
+
+                Color c = originalColor;
+                c.a = visible ? 1f : 0.2f; // parpadeo suave
+                spriteRenderer.color = c;
+
+                yield return new WaitForSeconds(blinkInterval);
+                elapsed += blinkInterval;
+            }
+
+            spriteRenderer.color = originalColor;
+            hitLocked = false;
+
         }
 
-        spriteRenderer.color = originalColor;
-        hitLocked = false;
+        if(vidas == 0)
+        {
+            menu.menuLose.SetActive(true);
+            respawnAnim.SetTrigger("HorseFell");
+
+        }
+
+
     }
 
 
