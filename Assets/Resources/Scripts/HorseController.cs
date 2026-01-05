@@ -444,10 +444,14 @@ public class HorseController : MonoBehaviour
 
     IEnumerator HitRoutine()
     {
-
-        if(vidas > 0)
-        {
             vidas--;
+
+            if(vidas <= 0)
+            {
+                respawnAnim.SetTrigger("HorseFell");
+                menu.menuLose.SetActive(true);
+                yield return new WaitForSeconds(0);
+            }
 
             vidasSprites[vidas].GetComponent<Image>().sprite = vidaImage;
 
@@ -487,16 +491,6 @@ public class HorseController : MonoBehaviour
 
             spriteRenderer.color = originalColor;
             hitLocked = false;
-
-        }
-
-        if(vidas == 0)
-        {
-            menu.menuLose.SetActive(true);
-            respawnAnim.SetTrigger("HorseFell");
-
-        }
-
 
     }
 
