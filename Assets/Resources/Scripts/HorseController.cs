@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,6 +15,15 @@ public class HorseController : MonoBehaviour
     public Animator estelaAnim;
     public GameObject estela;
     public Image meter;
+    public Sprite collecionableImage;
+    public Sprite vidaImage;
+    public TextMeshProUGUI speedText;
+    public GameObject[] collectableSprites;
+    public GameObject[] vidasSprites;
+    private bool hitLocked = false;
+    private SpriteRenderer spriteRenderer;
+    public CameraFollow2D cameraFollow;
+    public MenuController menu;
 
     [Header("Velocidades")]
     public float baseSpeed = 15f;
@@ -64,17 +74,17 @@ public class HorseController : MonoBehaviour
     public float hitSlowMultiplier = 0.85f;
     public int contadorCollectables = 0;
 
-    public GameObject[] collectableSprites;
-
-    public TextMeshProUGUI speedText;
-
-    private bool hitLocked = false;
-    private SpriteRenderer spriteRenderer;
-    public CameraFollow2D cameraFollow; // Arrastra tu cámara aquí
+    [Header("Nivel")]
 
     public bool levelPassed = false;
 
-    
+    public Timer timer;
+    bool estrella1Nivel = false;
+    bool estrella2Collecionables = false;
+    bool estrella3Tiempo = false;
+    public int vidas = 3;
+
+    //Vector3(182.533005,-96.3720016,0) Posicion jugador
 
     void Awake()
     {
@@ -310,9 +320,7 @@ public class HorseController : MonoBehaviour
 
     public void OnReset(InputAction.CallbackContext ctx)
     {
-        SceneManager.LoadScene(
-            SceneManager.GetActiveScene().buildIndex
-        );
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         Time.timeScale = 1f;
     }
@@ -337,7 +345,81 @@ public class HorseController : MonoBehaviour
 
         if (collision.collider.CompareTag("NextLevel"))
         {
+
+            menu.menuWin.SetActive(true);
+
+            string tiempoTotal = timer.text.text.Trim().Replace(',', '.');
+
+            timer.totalTime = float.Parse(tiempoTotal, NumberStyles.Float, CultureInfo.InvariantCulture);
+
+            timer.completed = true;
+
+            Debug.Log("El tiempo final fue de: "+ timer.totalTime);
             levelPassed = true;
+
+            estrella1Nivel = true;
+
+            //contadorCollectables = 3;
+            //timer.totalTime = 5.5f;
+
+            if ( contadorCollectables >= 3)
+            {
+                estrella2Collecionables = true;
+            }
+
+            if (SceneManager.GetActiveScene().buildIndex == 1 && timer.totalTime < 60)//1 Es el primer nivel, el 0 sería el menu principal
+            {
+                estrella3Tiempo = true;
+            }
+
+            if (SceneManager.GetActiveScene().buildIndex == 2 && timer.totalTime < 40)//2 Es el segundo nivel, el 0 sería el menu principal
+            {
+                estrella3Tiempo = true;
+            }
+
+
+
+            if (estrella1Nivel && estrella2Collecionables && estrella3Tiempo)
+            {
+                Debug.Log("Se han conseguido las tres estrellas");
+                menu.listaEstrellas[0].SetActive(true);
+                menu.listaEstrellas[1].SetActive(true);
+                menu.listaEstrellas[2].SetActive(true);
+            }
+            else if (estrella1Nivel && estrella2Collecionables)
+            {
+                Debug.Log("Se han conseguido la primera y la segunda estrella");
+                menu.listaEstrellas[0].SetActive(true);
+                menu.listaEstrellas[1].SetActive(true);
+            }
+            else if (estrella1Nivel && estrella3Tiempo)
+            {
+                Debug.Log("Se han conseguido la primera y la tercera estrella");
+                menu.listaEstrellas[0].SetActive(true);
+                menu.listaEstrellas[2].SetActive(true);
+            }
+            else if (estrella2Collecionables && estrella3Tiempo)
+            {
+                Debug.Log("Se han conseguido la segunda y la tercera estrella");
+                menu.listaEstrellas[1].SetActive(true);
+                menu.listaEstrellas[2].SetActive(true);
+            }
+            else if (estrella1Nivel)
+            {
+                Debug.Log("Solo se ha conseguido la primera estrella");
+                menu.listaEstrellas[0].SetActive(true);
+            }
+            else if (estrella2Collecionables)
+            {
+                Debug.Log("Solo se ha conseguido la segunda estrella");
+                menu.listaEstrellas[1].SetActive(true);
+            }
+            else if (estrella3Tiempo)
+            {
+                Debug.Log("Solo se ha conseguido la tercera estrella");
+                menu.listaEstrellas[2].SetActive(true);
+            }
+
         }
 
         if (collision.collider.CompareTag("Collectable"))
@@ -347,9 +429,9 @@ public class HorseController : MonoBehaviour
             contadorCollectables += 1;
             if (contadorCollectables - 1 < collectableSprites.Length)
             {
-                collectableSprites[contadorCollectables - 1].SetActive(true);
+                //collectableSprites[contadorCollectables - 1].SetActive(true);
+                collectableSprites[contadorCollectables - 1].GetComponent<Image>().sprite = collecionableImage;
             }
-            //Destroy(collision.collider.gameObject);
         }
 
         if (collision.collider.CompareTag("Respawn"))
@@ -362,42 +444,54 @@ public class HorseController : MonoBehaviour
 
     IEnumerator HitRoutine()
     {
-        hitLocked = true;
+            vidas--;
 
-        float speed01 = Mathf.InverseLerp(
-            baseSpeed,
-            accelSpeed,
-            currentSpeed
-        );
+            if(vidas <= 0)
+            {
+                respawnAnim.SetTrigger("HorseFell");
+                menu.menuLose.SetActive(true);
+                yield return new WaitForSeconds(0);
+            }
 
-        float slowFactor = Mathf.Lerp(
-            0.25f,
-            hitSlowMultiplier,
-            speed01
-        );
+            vidasSprites[vidas].GetComponent<Image>().sprite = vidaImage;
 
-        currentSpeed *= (1f - slowFactor);
-        currentSpeed = Mathf.Max(currentSpeed, minHitSpeed);
+            hitLocked = true;
 
-        float elapsed = 0f;
-        bool visible = true;
+            float speed01 = Mathf.InverseLerp(
+                baseSpeed,
+                accelSpeed,
+                currentSpeed
+            );
 
-        Color originalColor = spriteRenderer.color;
+            float slowFactor = Mathf.Lerp(
+                0.25f,
+                hitSlowMultiplier,
+                speed01
+            );
 
-        while (elapsed < hitDuration)
-        {
-            visible = !visible;
+            currentSpeed *= (1f - slowFactor);
+            currentSpeed = Mathf.Max(currentSpeed, minHitSpeed);
 
-            Color c = originalColor;
-            c.a = visible ? 1f : 0.2f; // parpadeo suave
-            spriteRenderer.color = c;
+            float elapsed = 0f;
+            bool visible = true;
 
-            yield return new WaitForSeconds(blinkInterval);
-            elapsed += blinkInterval;
-        }
+            Color originalColor = spriteRenderer.color;
 
-        spriteRenderer.color = originalColor;
-        hitLocked = false;
+            while (elapsed < hitDuration)
+            {
+                visible = !visible;
+
+                Color c = originalColor;
+                c.a = visible ? 1f : 0.2f; // parpadeo suave
+                spriteRenderer.color = c;
+
+                yield return new WaitForSeconds(blinkInterval);
+                elapsed += blinkInterval;
+            }
+
+            spriteRenderer.color = originalColor;
+            hitLocked = false;
+
     }
 
 
