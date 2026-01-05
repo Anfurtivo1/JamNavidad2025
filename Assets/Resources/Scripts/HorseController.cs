@@ -15,6 +15,11 @@ public class HorseController : MonoBehaviour
     public Animator estelaAnim;
     public GameObject estela;
     public Image meter;
+    public TextMeshProUGUI speedText;
+    public GameObject[] collectableSprites;
+    private bool hitLocked = false;
+    private SpriteRenderer spriteRenderer;
+    public CameraFollow2D cameraFollow;
 
     [Header("Velocidades")]
     public float baseSpeed = 15f;
@@ -65,19 +70,16 @@ public class HorseController : MonoBehaviour
     public float hitSlowMultiplier = 0.85f;
     public int contadorCollectables = 0;
 
-    public GameObject[] collectableSprites;
-
-    public TextMeshProUGUI speedText;
-
-    private bool hitLocked = false;
-    private SpriteRenderer spriteRenderer;
-    public CameraFollow2D cameraFollow; // Arrastra tu cámara aquí
+    [Header("Nivel")]
 
     public bool levelPassed = false;
 
     public Timer timer;
+    bool estrella1Nivel = false;
+    bool estrella2Collecionables = false;
+    bool estrella3Tiempo = false;
 
-    
+
 
     void Awake()
     {
@@ -349,17 +351,58 @@ public class HorseController : MonoBehaviour
             Debug.Log("El tiempo final fue de: "+ timer.totalTime);
             levelPassed = true;
 
-            //estrella1 = true;
+            estrella1Nivel = true;
+
+            //contadorCollectables = 3;
+            //timer.totalTime = 5.5f;
 
             if ( contadorCollectables >= 3)
             {
-                //estrella2 = true;
+                estrella2Collecionables = true;
             }
 
-            if (SceneManager.GetActiveScene().buildIndex == 1 && timer.totalTime < 10)//Es el primer nivel, el 0 sería el menu principal
+            if (SceneManager.GetActiveScene().buildIndex == 1 && timer.totalTime < 60)//1 Es el primer nivel, el 0 sería el menu principal
             {
-                //estrella3 = true;
+                estrella3Tiempo = true;
             }
+
+            if (SceneManager.GetActiveScene().buildIndex == 2 && timer.totalTime < 40)//2 Es el segundo nivel, el 0 sería el menu principal
+            {
+                estrella3Tiempo = true;
+            }
+
+
+
+            if (estrella1Nivel && estrella2Collecionables && estrella3Tiempo)
+            {
+                Debug.Log("Se han conseguido las tres estrellas");
+            }
+            else if (estrella1Nivel && estrella2Collecionables)
+            {
+                Debug.Log("Se han conseguido la primera y la segunda estrella");
+            }
+            else if (estrella1Nivel && estrella3Tiempo)
+            {
+                Debug.Log("Se han conseguido la primera y la tercera estrella");
+            }
+            else if (estrella2Collecionables && estrella3Tiempo)
+            {
+                Debug.Log("Se han conseguido la segunda y la tercera estrella");
+            }
+            else if (estrella1Nivel)
+            {
+                Debug.Log("Solo se ha conseguido la primera estrella");
+            }
+            else if (estrella2Collecionables)
+            {
+                Debug.Log("Solo se ha conseguido la segunda estrella");
+            }
+            else if (estrella3Tiempo)
+            {
+                Debug.Log("Solo se ha conseguido la tercera estrella");
+            }
+
+
 
         }
 
