@@ -17,7 +17,6 @@ public class HorseController : MonoBehaviour
     public Image meter;
     public Sprite collecionableImage;
     public Sprite vidaImage;
-    public TextMeshProUGUI speedText;
     public GameObject[] collectableSprites;
     public GameObject[] vidasSprites;
     private bool hitLocked = false;
@@ -104,7 +103,6 @@ public class HorseController : MonoBehaviour
 
     void FixedUpdate()
     {
-        speedText.text = $"Speed: {currentSpeed:F1}";
         grounded = Physics2D.OverlapCircle(
             groundCheck.position,
             groundRadius,
