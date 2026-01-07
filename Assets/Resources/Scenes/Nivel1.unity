@@ -7205,9 +7205,9 @@ MonoBehaviour:
   target: {fileID: 7991588666042368204}
   offset: {x: 15, y: 0, z: 0}
   smoothSpeed: 10
-  minSize: 5
-  regSize: 10
-  maxSize: 16
+  minSize: 8
+  regSize: 15
+  maxSize: 25
   normalZoomSmoothTime: 0.3
   decelZoomSmoothTime: 0.12
   horse: {fileID: 7991588666042368210}

@@ -435,6 +435,12 @@ public class HorseController : MonoBehaviour
         if (collision.collider.CompareTag("Respawn"))
         {
             respawnAnim.SetTrigger("HorseFell");
+            menu.menuLose.SetActive(true);
+            timer.completed = true;
+            vidasSprites[0].GetComponent<Image>().sprite = vidaImage;
+            vidasSprites[1].GetComponent<Image>().sprite = vidaImage;
+            vidasSprites[2].GetComponent<Image>().sprite = vidaImage;
+
             //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
