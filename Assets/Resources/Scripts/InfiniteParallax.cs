@@ -20,7 +20,7 @@ public class InfiniteParallax : MonoBehaviour
         lastCamPos = cam.position;
     }
 
-    void LateUpdate()
+    void Update()
     {
         Vector3 delta = cam.position - lastCamPos;
         transform.position += new Vector3(delta.x * parallaxFactor, 0f, 0f);
