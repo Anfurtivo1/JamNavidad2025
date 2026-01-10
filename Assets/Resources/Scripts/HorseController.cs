@@ -24,6 +24,16 @@ public class HorseController : MonoBehaviour
     public CameraFollow2D cameraFollow;
     public MenuController menu;
 
+    [Header("Sonidos")]
+    public AudioClip sonidoAterrizar;
+    public AudioClip sonidoCaerse;
+    public AudioClip sonidoChocarseObstaculo;
+    public AudioClip sonidoSalto;
+    public AudioClip sonidoVictoria;
+    public AudioSource srcSonidos;
+    public AudioSource srcMovimiento;
+
+
     [Header("Velocidades")]
     public float baseSpeed = 15f;
     public float accelSpeed = 25f;
@@ -218,6 +228,7 @@ public class HorseController : MonoBehaviour
             );
             estelaAnim.SetBool("Grounded", true);
             estela.SetActive(true);
+
         }
         else
         {
@@ -261,6 +272,10 @@ public class HorseController : MonoBehaviour
                 rb.linearVelocity.x,
                 jumpForce
             );
+
+            srcSonidos.clip = sonidoSalto;
+            srcSonidos.Play();
+
         }
     }
 
@@ -337,12 +352,17 @@ public class HorseController : MonoBehaviour
     {
         if (collision.collider.CompareTag("Obstacle") && !hitLocked)
         {
+            srcSonidos.clip = sonidoChocarseObstaculo;
+            srcSonidos.Play();
+
             StartCoroutine(HitRoutine());
             Destroy(collision.collider);
         }
 
         if (collision.collider.CompareTag("NextLevel"))
         {
+            srcSonidos.clip = sonidoVictoria;
+            srcSonidos.Play();
 
             menu.menuWin.SetActive(true);
 
@@ -434,6 +454,10 @@ public class HorseController : MonoBehaviour
 
         if (collision.collider.CompareTag("Respawn"))
         {
+
+            srcSonidos.clip = sonidoCaerse;
+            srcSonidos.Play();
+
             respawnAnim.SetTrigger("HorseFell");
             menu.menuLose.SetActive(true);
             timer.completed = true;
@@ -444,6 +468,12 @@ public class HorseController : MonoBehaviour
             //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
+        if (collision.collider.CompareTag("Floor"))
+        {
+            //srcSonidos.clip = sonidoAterrizar;
+            //srcSonidos.Play();
+        }
+
     }
 
     IEnumerator HitRoutine()
@@ -451,10 +481,13 @@ public class HorseController : MonoBehaviour
             vidas--;
 
             if(vidas <= 0)
-            {
+        {
+                srcSonidos.clip = sonidoCaerse;
+                srcSonidos.Play();
+
                 respawnAnim.SetTrigger("HorseFell");
                 menu.menuLose.SetActive(true);
-                yield return new WaitForSeconds(0);
+                //yield return new WaitForSeconds(0);
             }
 
             vidasSprites[vidas].GetComponent<Image>().sprite = vidaImage;

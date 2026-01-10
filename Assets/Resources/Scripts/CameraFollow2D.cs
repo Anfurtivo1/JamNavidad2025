@@ -17,6 +17,8 @@ public class CameraFollow2D : MonoBehaviour
 
     [Header("Referencia")]
     public HorseController horse;
+    public AudioSource srcMusica;
+    public AudioSource srcViento;
 
     [Header("Offset dinámico")]
     [Range(0f, 2f)] public float offsetMultiplier = 1f; 

@@ -14,6 +14,21 @@ public class Timer : MonoBehaviour
     public bool completed = false;
     public GameObject stopWatch;
     public Animator animator;
+    public CameraFollow2D musica;
+    public AudioClip musicaLoop;
+    public float tiempoPreLoop;
+
+    public void Start()
+    {
+        StartCoroutine(ChangeMusic());
+    }
+
+    IEnumerator ChangeMusic()
+    {
+        yield return new WaitForSeconds(tiempoPreLoop);
+        musica.srcMusica.clip = musicaLoop;
+        musica.srcMusica.Play();
+    }
 
     // Update is called once per frame
     void Update()
