@@ -9,7 +9,7 @@ public class Timer : MonoBehaviour
 {
     private float timePassed;
     public float totalTime;
-    private HorseController controller;
+    public HorseController controller;
     public TextMeshProUGUI text;
     public bool completed = false;
     public GameObject stopWatch;
@@ -33,7 +33,7 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!completed)
+        if (!completed && !controller.defeated)
         {
             timePassed = timePassed + Time.deltaTime;
             text.text = timePassed.ToString("F2");

@@ -15,7 +15,7 @@ public class InfiniteParallax : MonoBehaviour
             cam = Camera.main.transform;
 
         SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
-        spriteWidth = sr.bounds.size.x;
+        spriteWidth = sr.bounds.size.x - 80;
 
         lastCamPos = cam.position;
     }

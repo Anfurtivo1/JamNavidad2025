@@ -2,8 +2,17 @@ using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
+    public HorseController horse;
     public void Destroy()
     {
+        if(horse != null)
+        {
+            if (horse.vidas <= 0)
+            {
+                horse.defeated = true;
+            }
+        }
+
         Destroy(gameObject);
     }
 

@@ -11,12 +11,12 @@ public class HorseController : MonoBehaviour
     [Header("Componentes")]
     public Rigidbody2D rb;
     public Transform horseVisual;
-    public Animator respawnAnim;
+    public Animator horseAnimator;
     public Animator estelaAnim;
     public GameObject estela;
     public Image meter;
     public Sprite collecionableImage;
-    public Sprite vidaImage;
+     public Sprite vidaImage;
     public GameObject[] collectableSprites;
     public GameObject[] vidasSprites;
     private bool hitLocked = false;
@@ -30,6 +30,7 @@ public class HorseController : MonoBehaviour
     public AudioClip sonidoChocarseObstaculo;
     public AudioClip sonidoSalto;
     public AudioClip sonidoVictoria;
+    public AudioClip sonidoCollectable;
     public AudioSource srcSonidos;
     public AudioSource srcMovimiento;
 
@@ -72,6 +73,7 @@ public class HorseController : MonoBehaviour
     private bool accelerating;
     public bool decelerating;
     public float currentSpeed;
+    public bool defeated = false;
 
     private Vector2 groundNormal = Vector2.up;
 
@@ -97,7 +99,7 @@ public class HorseController : MonoBehaviour
 
     void Awake()
     {
-        //Animator respawnAnim = this.GetComponent<Animator>();
+        //Animator horseAnimator = this.GetComponent<Animator>();
 
         if (rb == null)
         {
@@ -113,11 +115,15 @@ public class HorseController : MonoBehaviour
 
     void FixedUpdate()
     {
-        grounded = Physics2D.OverlapCircle(
+        if (!defeated)
+        {
+            grounded = Physics2D.OverlapCircle(
             groundCheck.position,
             groundRadius,
             groundLayer
         );
+
+        horseAnimator.SetBool("Grounded", grounded);
 
         if(currentSpeed <= 6)
         {
@@ -246,88 +252,101 @@ public class HorseController : MonoBehaviour
         Vector2 velocity = rb.linearVelocity;
         velocity.x = currentSpeed;
         rb.linearVelocity = velocity;
+        }
     }
 
     void Update()
     {
-        float angle = Mathf.Atan2(
-            groundNormal.y,
-            groundNormal.x
-        ) * Mathf.Rad2Deg;
+        if (!defeated)
+        {
+                float angle = Mathf.Atan2(
+                groundNormal.y,
+                groundNormal.x
+            ) * Mathf.Rad2Deg;
 
-        horseVisual.rotation = Quaternion.Lerp(
-            horseVisual.rotation,
-            Quaternion.Euler(0, 0, angle - 90f),
-            Time.deltaTime * 8f
-        );
+            horseVisual.rotation = Quaternion.Lerp(
+                horseVisual.rotation,
+                Quaternion.Euler(0, 0, angle - 90f),
+                Time.deltaTime * 8f
+            );
+        }
     }
 
     #region Input
 
     public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && grounded)
+        if (!defeated)
         {
-            rb.linearVelocity = new Vector2(
-                rb.linearVelocity.x,
-                jumpForce
-            );
+            if (ctx.performed && grounded)
+            {
+                rb.linearVelocity = new Vector2(
+                    rb.linearVelocity.x,
+                    jumpForce
+                );
 
-            srcSonidos.clip = sonidoSalto;
-            srcSonidos.Play();
+                srcSonidos.clip = sonidoSalto;
+                srcSonidos.Play();
 
+            }
         }
     }
 
 
     public void OnAccelerate(InputAction.CallbackContext ctx)
 {
-    accelerating = ctx.ReadValueAsButton();
-
-    if (ctx.performed)
-    {
-        // Al pulsar D
-        estelaAnim.SetBool("Acelerando", true);
-
-        if (cameraFollow != null)
+        if (!defeated)
         {
-            cameraFollow.offsetMultiplier = 1.5f;
-        }
-    }
-    else if (ctx.canceled)
-    {
-        // Al SOLTAR D
-        estelaAnim.SetBool("Acelerando", false);
+            accelerating = ctx.ReadValueAsButton();
 
-        if (cameraFollow != null)
-        {
-            cameraFollow.offsetMultiplier = 1f;
+            if (ctx.performed)
+            {
+                // Al pulsar D
+                estelaAnim.SetBool("Acelerando", true);
+
+                if (cameraFollow != null)
+                {
+                    cameraFollow.offsetMultiplier = 1.5f;
+                }
+            }
+            else if (ctx.canceled)
+            {
+                // Al SOLTAR D
+                estelaAnim.SetBool("Acelerando", false);
+
+                if (cameraFollow != null)
+                {
+                    cameraFollow.offsetMultiplier = 1f;
+                }
+            }
         }
-    }
 }
 
 
     public void OnDecelerate(InputAction.CallbackContext ctx)
-{
-    decelerating = ctx.ReadValueAsButton();
-
-    if (ctx.performed)
     {
-        estelaAnim.SetBool("Acelerando", false);
-
-        if (cameraFollow != null)
+        if (!defeated)
         {
-            cameraFollow.offsetMultiplier = 0.7f;
+            decelerating = ctx.ReadValueAsButton();
+
+            if (ctx.performed)
+            {
+                estelaAnim.SetBool("Acelerando", false);
+
+                if (cameraFollow != null)
+                {
+                    cameraFollow.offsetMultiplier = 0.7f;
+                }
+            }
+            else if (ctx.canceled)
+            {
+                if (cameraFollow != null)
+                {
+                    cameraFollow.offsetMultiplier = 1f;
+                }
+            }
         }
     }
-    else if (ctx.canceled)
-    {
-        if (cameraFollow != null)
-        {
-            cameraFollow.offsetMultiplier = 1f;
-        }
-    }
-}
 
 
 
@@ -390,7 +409,7 @@ public class HorseController : MonoBehaviour
                 estrella3Tiempo = true;
             }
 
-            if (SceneManager.GetActiveScene().buildIndex == 2 && timer.totalTime < 40)//2 Es el segundo nivel, el 0 sería el menu principal
+            if (SceneManager.GetActiveScene().buildIndex == 2 && timer.totalTime < 50)//2 Es el segundo nivel, el 0 sería el menu principal
             {
                 estrella3Tiempo = true;
             }
@@ -442,6 +461,8 @@ public class HorseController : MonoBehaviour
 
         if (collision.collider.CompareTag("Collectable"))
         {
+            srcSonidos.clip = sonidoCollectable;
+            srcSonidos.Play();
             collision.gameObject.GetComponent<Animator>().SetTrigger("Collected");
 
             contadorCollectables += 1;
@@ -458,7 +479,7 @@ public class HorseController : MonoBehaviour
             srcSonidos.clip = sonidoCaerse;
             srcSonidos.Play();
 
-            respawnAnim.SetTrigger("HorseFell");
+            horseAnimator.SetTrigger("HorseFell");
             menu.menuLose.SetActive(true);
             timer.completed = true;
             vidasSprites[0].GetComponent<Image>().sprite = vidaImage;
@@ -485,7 +506,7 @@ public class HorseController : MonoBehaviour
                 srcSonidos.clip = sonidoCaerse;
                 srcSonidos.Play();
 
-                respawnAnim.SetTrigger("HorseFell");
+                horseAnimator.SetTrigger("HorseFell");
                 menu.menuLose.SetActive(true);
                 //yield return new WaitForSeconds(0);
             }
