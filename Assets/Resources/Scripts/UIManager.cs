@@ -102,7 +102,7 @@ public class UIManager : MonoBehaviour
     public void ConfirmExitGame()
     {
         Application.Quit();
-        EditorApplication.isPlaying = false;
+        //EditorApplication.isPlaying = false;
     }
 
     public void CancelExitGame()

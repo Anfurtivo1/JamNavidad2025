@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TMPro;
-using Microsoft.Unity.VisualStudio.Editor;
-
 public class Timer : MonoBehaviour
 {
     private float timePassed;

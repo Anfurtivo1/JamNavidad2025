@@ -6984,7 +6984,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 99d9703409d88a65bb983e0071fc661f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -109026,7 +109026,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {fileID: 0}
   - m_RefCount: 9545
-    m_Data: {fileID: 11400000, guid: 9a8684eae1d5b32408ed47b371b53012, type: 2}
+    m_Data: {fileID: 11400000, guid: 0177d27ba10a0911eb29cb792b751f9e, type: 2}
   - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: 10866a1a1a004f841931ae9845017e87, type: 2}
   - m_RefCount: 12
@@ -109049,7 +109049,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {fileID: 0}
   - m_RefCount: 9545
-    m_Data: {fileID: 1566641070, guid: 79c4b2252832fc746a5ff856826e9c37, type: 3}
+    m_Data: {fileID: 1971829983, guid: f637e530fe8615b69addbe14a0efc5fa, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: -1028715747, guid: 79c4b2252832fc746a5ff856826e9c37, type: 3}
   - m_RefCount: 12
@@ -112047,6 +112047,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 484715366134557589, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 790870902}
+    - target: {fileID: 484715366134557589, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextLevel
+      objectReference: {fileID: 0}
     - target: {fileID: 788437693404456550, guid: deee9394d6970fc65af2f760f035adc9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -112422,6 +112430,10 @@ PrefabInstance:
       propertyPath: 'collectableSprites.Array.data[2]'
       value: 
       objectReference: {fileID: 35463549}
+    - target: {fileID: 1608148101924263367, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5125792951323916991, guid: ade4b5ec7f8094f92aac90779a7a1488, type: 3}
       propertyPath: m_Name
       value: Player
